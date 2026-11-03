@@ -11,11 +11,15 @@ class LeafNode(HTMLNode):
             return self.value
         else:
             if self.props != None:
-                htm = f"<"+self.tag+self.props+">"+self.value+"</"+self.tag+">"
+                properties = ""
+                for key, value in self.props.items():
+                    properties = properties+" "+str(key)+str(value)
+                htm = f"<{self.tag}{properties}>{self.value}</{self.tag}>"
                 return htm
             else:
-                htm = f"<"+self.tag+">"+self.value+"</"+self.tag+">"
+                htm = f"<"+self.tag+">"+str(self.value)+"</"+self.tag+">"
                 return htm
 
     def __repr__(self, other):
         rep = f"LeafNode(<{self.tag}{self.props}>{self.value}</{self.tag}>)"
+        return rep
