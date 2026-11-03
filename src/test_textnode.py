@@ -1,5 +1,5 @@
 import unittest
-from textnode import TextNode, TextType
+from textnode import TextNode, TextType, text_node_to_html_node
 
 
 class TestTextNode(unittest.TestCase):
@@ -26,6 +26,18 @@ class TestTextNode(unittest.TestCase):
     def test5(self):
         node5 = TextNode("I've got a URL", TextType.LINK, "https://ImADummy.com")
         self.assertIsNotNone(node5.url)
+
+    def test6(self):
+        node6 = TextNode("This is a text node", TextType.PLAIN)
+        html_node = text_node_to_html_node(node6)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+
+    def test7(self):
+        node7 = TextNode("How's this translating the bold text?", TextType.BOLD)
+        htm = text_node_to_html_node(node7)
+        self.assertEqual(htm.tag, "b")
+        self.assertEqual(htm.value, "How's this translating the bold text?")
 
 
 if __name__ == "__main__":
