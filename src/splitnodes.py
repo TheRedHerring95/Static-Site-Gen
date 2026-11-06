@@ -7,16 +7,22 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
         if old_node.text_type != TextType.PLAIN:
             node_list.append(old_node)
             continue
-        text_list = old_node.text.split(delimiter,2)
-        if len(text_list) <3:
-            raise Exception("Invalid Markdown syntax")
-        node1 = TextNode(text_list[0], TextType.PLAIN)
-        node2 = TextNode(text_list[1], text_type)
-        node3 = TextNode(text_list[2], TextType.PLAIN)
-        node_list.append(node1)
-        node_list.append(node2)
-        node_list.append(node3)
-        continue
+        
+        current_text = old_node.text
+        while True:
+            # Find all instances of the delimiter and split by one at a time
+            parts = current_text.split(delimiter, 2)
+            if len(parts) == 3:
+                # More text after this delimiter - add both parts as nodes
+                node_list.append(TextNode(parts[0], TextType.PLAIN))
+                node_list.append(TextNode(parts[1], text_type))
+                current_text = parts[2]
+            elif len(parts) == 2:
+                raise Exception(f"Only one delimiter found for {delimiter}")
+            else:
+                break
+        if current_text:
+            node_list.append(TextNode(current_text, TextType.PLAIN))
     return node_list
 
 def split_nodes_images(old_nodes: list[TextNode]) -> list[TextNode]:
@@ -55,7 +61,7 @@ def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
                     node_list.append(TextNode(current_text, TextType.PLAIN))
                 break
             link = links[0]
-            marker = f"[{link[0]}]({link[1]})" # Fixed the ! typo here
+            marker = f"[{link[0]}]({link[1]})"
             parts = current_text.split(marker, 1)
             if parts[0]:
                 node_list.append(TextNode(parts[0], TextType.PLAIN))
