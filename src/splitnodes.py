@@ -7,7 +7,6 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
         if old_node.text_type != TextType.PLAIN:
             node_list.append(old_node)
             continue
-        
         current_text = old_node.text
         while True:
             # Find all instances of the delimiter and split by one at a time
