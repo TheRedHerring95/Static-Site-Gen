@@ -51,7 +51,8 @@ This one, however, should be a code block, with nothing else.
 """
         nodes = markdown_to_html_node(md)
         html = nodes.to_html()
+        self.maxDiff = None
         self.assertEqual(
             html,
-            "<div><pre><p><i>This</i> text <b>should</b> be <code>all</code> just paragraph, for as long as it may be.</p><code>This one, however, should be a code block, with nothing else.</code></pre><blockquote>And this one here should be a quote of some kind, there to be quote</blockquote><ul><li>This time we've got a list, and it's unordered</li><li>And it's got two items in it</li></ul><ol><li>Here's an ordered list now</li><li>And it's got two items</li></ol></div"
+            "<div><p><i>This</i> text <b>should</b> be <code>all</code> just paragraph, for as long as it may be.</p><pre><code>This one, however, should be a code block, with nothing else.\n</code></pre><blockquote>And this one here should be a quote of some kind, there to be quote</blockquote><ul><li>This time we've got a list, and it's unordered</li><li>And it's got two items in it</li></ul><ol start=1><li>Here's an ordered list now</li><li>And it's got two items</li></ol></div>"
         )
