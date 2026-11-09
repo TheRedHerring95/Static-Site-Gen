@@ -1,5 +1,5 @@
 import unittest
-from mdtohtml import markdown_to_html_node
+from mdtohtml import markdown_to_html_node, extract_title
 from parentnode import *
 
 class TestMDToHTML(unittest.TestCase):
@@ -56,3 +56,21 @@ This one, however, should be a code block, with nothing else.
             html,
             "<div><p><i>This</i> text <b>should</b> be <code>all</code> just paragraph, for as long as it may be.</p><pre><code>This one, however, should be a code block, with nothing else.\n</code></pre><blockquote>And this one here should be a quote of some kind, there to be quote</blockquote><ul><li>This time we've got a list, and it's unordered</li><li>And it's got two items in it</li></ul><ol start=1><li>Here's an ordered list now</li><li>And it's got two items</li></ol></div>"
         )
+
+    def test_heading(self):
+        md = "# This should be a successful heading"
+        title = extract_title(md)
+        self.assertEqual(title, "This should be a successful heading")
+
+    def test_heading2(self):
+        md = """
+This should be skipped over as a paragraph.
+
+## This should be skipped over as a h2.
+
+#This should be ignored for improper syntax.
+
+# This should be the correct title.
+"""
+        title = extract_title(md)
+        self.assertEqual(title, "This should be the correct title.")

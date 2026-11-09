@@ -5,6 +5,7 @@ from textnode import text_node_to_html_node, TextNode, TextType
 from texttonode import text_to_textnodes
 from listhandling import *
 from htmlnode import HTMLNode
+import os
 
 def markdown_to_html_node(markdown: str) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
@@ -62,3 +63,27 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         else: raise Exception("Invalid block")
     parent = ParentNode("div", nodes)
     return parent
+
+def extract_title(md):
+    lines = md.split("\n")
+    for line in lines: 
+        if line[:2] == "# ":
+            title = line[2:]
+            title = title.strip()
+            return title
+    raise Exception("No h1 heading")
+
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    if os.path.isfile(from_path) == True:
+        source = open(from_path)
+        temp = open(template_path)
+        contents = source.read()
+        template = temp.read()
+        node = markdown_to_html_node(contents)
+        html = node.to_html()
+        title = extract_title(contents)
+        titled = template.replace("{{ Title }}", title)
+        page = template.replace("{{ Content }}", html)
+        dest = open(dest_path)
+        dest.write(page)

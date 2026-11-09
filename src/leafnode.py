@@ -5,10 +5,15 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, None, props)
 
     def to_html(self) -> str:
-        if self.value == None:
+        if self.value == None and self.tag != "img":
             raise ValueError("No value listed on leaf")
         if self.tag == None:
             return self.value
+        elif self.tag == "img":
+            properties = ""
+            for key, value in self.props.items():
+                properties = properties+" "+str(key)+"="+str(value)
+            htm = f"<{self.tag}{properties}>"
         else:
             if self.props != None:
                 properties = ""
