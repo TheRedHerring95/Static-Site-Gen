@@ -14,6 +14,7 @@ class LeafNode(HTMLNode):
             for key, value in self.props.items():
                 properties = properties+" "+str(key)+"="+str(value)
             htm = f"<{self.tag}{properties}>"
+            return htm
         else:
             if self.props != None:
                 properties = ""

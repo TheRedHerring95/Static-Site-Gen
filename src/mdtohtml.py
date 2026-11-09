@@ -14,8 +14,8 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         typed = (block_to_blocktype(block))
         if typed != BlockType.CODE:
             if typed == BlockType.HEAD:
-                count = 1
-                while block[count-1] == "#":
+                count = 0
+                while block[count] == "#":
                     count +=1
                 for i in range(count):
                     block = block.strip("#")
@@ -85,5 +85,5 @@ def generate_page(from_path, template_path, dest_path):
         title = extract_title(contents)
         titled = template.replace("{{ Title }}", title)
         page = template.replace("{{ Content }}", html)
-        dest = open(dest_path)
+        dest = open(dest_path, 'w')
         dest.write(page)
