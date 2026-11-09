@@ -5,7 +5,7 @@ def static_to_public(public:str = None, static:str = None):
     if static == None:
         static = "static"
     if public == None:
-        public = "public"
+        public = "docs"
     if os.path.exists(f"./{public}") != False:
         if len(os.listdir(f"./{public}")) != 0:
             shutil.rmtree(f"./{public}")

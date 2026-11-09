@@ -73,7 +73,7 @@ def extract_title(md):
             return title
     raise Exception("No h1 heading")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     items = []
     if os.path.isfile(from_path) == False:
         items = os.listdir(from_path)
@@ -85,7 +85,7 @@ def generate_page(from_path, template_path, dest_path):
             new_dest = f"{dest_path}/{target}"
             if os.path.exists(dest_path) == False:
                 os.mkdir(dest_path)
-            generate_page(new_from, template_path, new_dest)
+            generate_page(new_from, template_path, new_dest, basepath)
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     if os.path.isfile(from_path) == True:
         source = open(from_path)
@@ -97,5 +97,7 @@ def generate_page(from_path, template_path, dest_path):
         title = extract_title(contents)
         titled = template.replace("{{ Title }}", title)
         page = template.replace("{{ Content }}", html)
+        page = page.replace('href="/"', f'href="{basepath}"')
+        page = page.replace('src="/"', f'src="{basepath}"')
         dest = open(dest_path, 'w')
         dest.write(page)

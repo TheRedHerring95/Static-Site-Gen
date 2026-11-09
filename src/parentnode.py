@@ -15,7 +15,7 @@ class ParentNode(HTMLNode):
         if self.props != None:
             properties = ""
             for key, value in self.props.items():
-                properties = properties+" "+str(key)+"="+str(value)
+                properties = properties+" "+str(key)+'"'+str(value)+'"'
             parent = "<"+self.tag+properties+">"+child_html+"</"+self.tag+">"
             return parent
         if self.props == None:
