@@ -10,6 +10,6 @@ def main():
         basepath = sys.argv[1]
     else: basepath = "/"
     static_to_public()
-    generate_page("./content", "./template.html", "./docs", basepath)
+    generate_page("./content", "./template.html", "./public", basepath)
 
 main()
